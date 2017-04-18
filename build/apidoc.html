@@ -61,12 +61,278 @@
 
     <li class="apidocModuleLi"><a href="#apidoc.module.express-rate-limit">module express-rate-limit</a><ol>
 
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.express-rate-limit.express-rate-limit">
+            function <span class="apidocSignatureSpan"></span>express-rate-limit
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.express-rate-limit.memory_store">
+            function <span class="apidocSignatureSpan">express-rate-limit.</span>memory_store
+            <span class="apidocSignatureSpan">(windowMs)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.express-rate-limit.toString">
+            function <span class="apidocSignatureSpan">express-rate-limit.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.express-rate-limit.memory_store">module express-rate-limit.memory_store</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.express-rate-limit.memory_store.memory_store">
+            function <span class="apidocSignatureSpan">express-rate-limit.</span>memory_store
+            <span class="apidocSignatureSpan">(windowMs)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.express-rate-limit.toString">module express-rate-limit.toString</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.express-rate-limit.toString.toString">
+            function <span class="apidocSignatureSpan">express-rate-limit.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.express-rate-limit" id="apidoc.module.express-rate-limit">module express-rate-limit</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.express-rate-limit.express-rate-limit" id="apidoc.element.express-rate-limit.express-rate-limit">
+        function <span class="apidocSignatureSpan"></span>express-rate-limit
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function RateLimit(options) {
+
+    options = defaults(options, {
+        // window, delay, and max apply per-key unless global is set to true
+        windowMs: 60 * 1000, // milliseconds - how long to keep records of requests in memory
+        delayAfter: 1, // how many requests to allow through before starting to delay responses
+        delayMs: 1000, // milliseconds - base delay applied to the response - multiplied by number of recent hits for the same key
+.
+        max: 5, // max number of recent connections during `window` milliseconds before sending a 429 response
+        message : &#x27;Too many requests, please try again later.&#x27;,
+        statusCode: 429, // 429 status = Too Many Requests (RFC 6585)
+        headers: true, //Send custom rate limit header with limit and remaining
+        // allows to create custom keys (by default user IP is used)
+        keyGenerator: function (req /*, res*/) {
+            return req.ip;
+        },
+        skip: function (/*req, res*/) {
+            return false;
+        },
+        handler: function (req, res /*, next*/) {
+          res.format({
+            html: function(){
+              res.status(options.statusCode).end(options.message);
+            },
+            json: function(){
+              res.status(options.statusCode).json({ message: options.message });
+            }
+          });
+        }
+    });
+
+    // store to use for persisting rate limit data
+    options.store = options.store || new MemoryStore(options.windowMs);
+
+
+    // ensure that the store has the incr method
+    if (typeof options.store.incr !== &#x27;function&#x27; || typeof options.store.resetKey !== &#x27;function&#x27;) {
+        throw new Error(&#x27;The store is not valid.&#x27;);
+    }
+
+
+    if (options.global) {
+        throw new Error(&#x27;The global option was removed from express-rate-limit v2.&#x27;);
+    }
+
+
+    function rateLimit(req, res, next) {
+        if (options.skip(req, res)) {
+            return next();
+        }
+
+        var key = options.keyGenerator(req, res);
+
+        options.store.incr(key, function(err, current) {
+            if (err) {
+              return next(err);
+            }
+
+            req.rateLimit = {
+              limit: options.max,
+              remaining: Math.max(options.max - current, 0)
+            };
+
+            if (options.headers) {
+              res.setHeader(&#x27;X-RateLimit-Limit&#x27;, options.max);
+              res.setHeader(&#x27;X-RateLimit-Remaining&#x27;, req.rateLimit.remaining);
+            }
+
+            if (options.max &#x26;&#x26; current &#x3e; options.max) {
+              return options.handler(req, res, next);
+            }
+
+            if (options.delayAfter &#x26;&#x26; options.delayMs &#x26;&#x26; current &#x3e; options.delayAfter) {
+              var delay = (current - options.delayAfter) * options.delayMs;
+              return setTimeout(next, delay);
+            }
+
+            next();
+
+        });
+    }
+
+    rateLimit.resetKey = options.store.resetKey.bind(options.store);
+
+    // Backward compatibility function
+    rateLimit.resetIp = rateLimit.resetKey;
+
+    return rateLimit;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.express-rate-limit.memory_store" id="apidoc.element.express-rate-limit.memory_store">
+        function <span class="apidocSignatureSpan">express-rate-limit.</span>memory_store
+        <span class="apidocSignatureSpan">(windowMs)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function MemoryStore(windowMs) {
+  var hits = {};
+
+  this.incr = function(key, cb) {
+      if (hits[key]) {
+          hits[key]++;
+      } else {
+          hits[key] = 1;
+      }
+
+      cb(null, hits[key]);
+  };
+
+  this.resetAll = function() {
+      hits = {};
+  };
+
+  // export an API to allow hits from one or all IPs to be reset
+  this.resetKey = function(key) {
+      delete hits[key];
+  };
+
+  // simply reset ALL hits every windowMs
+  setInterval(this.resetAll, windowMs).unref();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.express-rate-limit.toString" id="apidoc.element.express-rate-limit.toString">
+        function <span class="apidocSignatureSpan">express-rate-limit.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.express-rate-limit.memory_store" id="apidoc.module.express-rate-limit.memory_store">module express-rate-limit.memory_store</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.express-rate-limit.memory_store.memory_store" id="apidoc.element.express-rate-limit.memory_store.memory_store">
+        function <span class="apidocSignatureSpan">express-rate-limit.</span>memory_store
+        <span class="apidocSignatureSpan">(windowMs)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function MemoryStore(windowMs) {
+  var hits = {};
+
+  this.incr = function(key, cb) {
+      if (hits[key]) {
+          hits[key]++;
+      } else {
+          hits[key] = 1;
+      }
+
+      cb(null, hits[key]);
+  };
+
+  this.resetAll = function() {
+      hits = {};
+  };
+
+  // export an API to allow hits from one or all IPs to be reset
+  this.resetKey = function(key) {
+      delete hits[key];
+  };
+
+  // simply reset ALL hits every windowMs
+  setInterval(this.resetAll, windowMs).unref();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.express-rate-limit.toString" id="apidoc.module.express-rate-limit.toString">module express-rate-limit.toString</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.express-rate-limit.toString.toString" id="apidoc.element.express-rate-limit.toString.toString">
+        function <span class="apidocSignatureSpan">express-rate-limit.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 </div>
 

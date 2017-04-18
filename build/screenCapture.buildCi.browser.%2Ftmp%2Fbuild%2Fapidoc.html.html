@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="https://github.com/nfriedly/express-rate-limit"
-
-    >express-rate-limit (v2.6.0)</a>
+    <a href="https://github.com/nfriedly/express-rate-limit">express-rate-limit (v2.6.0)</a>
 </h1>
 <h4>Basic IP rate-limiting middleware for Express. Use to limit repeated requests to public APIs and/or endpoints such as password reset.</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.express-rate-limit">module express-rate-limit</a><ol>
 
@@ -138,7 +131,7 @@
         delayMs: 1000, // milliseconds - base delay applied to the response - multiplied by number of recent hits for the same key
 .
         max: 5, // max number of recent connections during `window` milliseconds before sending a 429 response
-        message : &#x27;Too many requests, please try again later.&#x27;,
+        message : 'Too many requests, please try again later.',
         statusCode: 429, // 429 status = Too Many Requests (RFC 6585)
         headers: true, //Send custom rate limit header with limit and remaining
         // allows to create custom keys (by default user IP is used)
@@ -165,13 +158,13 @@
 
 
     // ensure that the store has the incr method
-    if (typeof options.store.incr !== &#x27;function&#x27; || typeof options.store.resetKey !== &#x27;function&#x27;) {
-        throw new Error(&#x27;The store is not valid.&#x27;);
+    if (typeof options.store.incr !== 'function' || typeof options.store.resetKey !== 'function') {
+        throw new Error('The store is not valid.');
     }
 
 
     if (options.global) {
-        throw new Error(&#x27;The global option was removed from express-rate-limit v2.&#x27;);
+        throw new Error('The global option was removed from express-rate-limit v2.');
     }
 
 
@@ -193,15 +186,15 @@
             };
 
             if (options.headers) {
-              res.setHeader(&#x27;X-RateLimit-Limit&#x27;, options.max);
-              res.setHeader(&#x27;X-RateLimit-Remaining&#x27;, req.rateLimit.remaining);
+              res.setHeader('X-RateLimit-Limit', options.max);
+              res.setHeader('X-RateLimit-Remaining', req.rateLimit.remaining);
             }
 
-            if (options.max &#x26;&#x26; current &#x3e; options.max) {
+            if (options.max &amp;&amp; current &gt; options.max) {
               return options.handler(req, res, next);
             }
 
-            if (options.delayAfter &#x26;&#x26; options.delayMs &#x26;&#x26; current &#x3e; options.delayAfter) {
+            if (options.delayAfter &amp;&amp; options.delayMs &amp;&amp; current &gt; options.delayAfter) {
               var delay = (current - options.delayAfter) * options.delayMs;
               return setTimeout(next, delay);
             }
@@ -342,3 +335,4 @@
     ]
 </div>
 </div>
+</body></html>
