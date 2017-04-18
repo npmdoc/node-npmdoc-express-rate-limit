@@ -1,9 +1,14 @@
-# api documentation for  [express-rate-limit (v2.6.0)](https://github.com/nfriedly/express-rate-limit)  [![npm package](https://img.shields.io/npm/v/npmdoc-express-rate-limit.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-express-rate-limit) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-express-rate-limit.svg)](https://travis-ci.org/npmdoc/node-npmdoc-express-rate-limit)
+# npmdoc-express-rate-limit
+
+#### api documentation for  [express-rate-limit (v2.6.0)](https://github.com/nfriedly/express-rate-limit)  [![npm package](https://img.shields.io/npm/v/npmdoc-express-rate-limit.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-express-rate-limit) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-express-rate-limit.svg)](https://travis-ci.org/npmdoc/node-npmdoc-express-rate-limit)
+
 #### Basic IP rate-limiting middleware for Express. Use to limit repeated requests to public APIs and/or endpoints such as password reset.
 
-[![NPM](https://nodei.co/npm/express-rate-limit.png?downloads=true)](https://www.npmjs.com/package/express-rate-limit)
+[![NPM](https://nodei.co/npm/express-rate-limit.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/express-rate-limit)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-express-rate-limit/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-express-rate-limit_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-express-rate-limit/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-express-rate-limit/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-express-rate-limit/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-express-rate-limit/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-express-rate-limit/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-express-rate-limit/build/screenCapture.npmPackageListing.svg)
 
@@ -72,13 +77,11 @@
     "main": "lib/express-rate-limit.js",
     "maintainers": [
         {
-            "name": "nfriedly",
-            "email": "nathan@nfriedly.com"
+            "name": "nfriedly"
         }
     ],
     "name": "express-rate-limit",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/nfriedly/express-rate-limit.git"
@@ -89,16 +92,6 @@
     "version": "2.6.0"
 }
 ```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module express-rate-limit](#apidoc.module.express-rate-limit)
-
-
-
-# <a name="apidoc.module.express-rate-limit"></a>[module express-rate-limit](#apidoc.module.express-rate-limit)
 
 
 
