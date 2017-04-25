@@ -1,6 +1,6 @@
 # npmdoc-express-rate-limit
 
-#### api documentation for  [express-rate-limit (v2.6.0)](https://github.com/nfriedly/express-rate-limit)  [![npm package](https://img.shields.io/npm/v/npmdoc-express-rate-limit.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-express-rate-limit) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-express-rate-limit.svg)](https://travis-ci.org/npmdoc/node-npmdoc-express-rate-limit)
+#### basic api documentation for  [express-rate-limit (v2.6.0)](https://github.com/nfriedly/express-rate-limit)  [![npm package](https://img.shields.io/npm/v/npmdoc-express-rate-limit.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-express-rate-limit) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-express-rate-limit.svg)](https://travis-ci.org/npmdoc/node-npmdoc-express-rate-limit)
 
 #### Basic IP rate-limiting middleware for Express. Use to limit repeated requests to public APIs and/or endpoints such as password reset.
 
@@ -89,7 +89,8 @@
     "scripts": {
         "test": "grunt"
     },
-    "version": "2.6.0"
+    "version": "2.6.0",
+    "bin": {}
 }
 ```
 
